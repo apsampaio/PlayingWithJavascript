@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <title>Hangman</title>
+<style>
+
+	* {
+        font: 400 46px "Quicksand", sans-serif;
+        color:black;
+        background: #FFF;
+    
+    } #buttons *{
+        font-size: 40px;
+        width: 76px;
+        height: 56px;
+        border-radius: 5px;
+        box-shadow: 0px 3px #7fafbc, 0px 4px 5px rgba(0, 0, 0, 0.3);
+        margin: 0 7px 11px 0;
+        background: #4a92eb;
+        cursor: pointer;
+        color: #FFF;
+        transition: all 0.7s ease;
+        
+
+    } #attempts {
+        margin: 20px;
+        width: 20%;
+        font-size: 40px;
+        border: 10px solid #3b89e9;
+        border-radius: 5px;
+        background-color: #3b89e9;
+        color: #FFF;
+    } #word {
+
+        font-size: 70px;
+        
+
+    } #hints {
+        color: #FFF;
+        font-size: 40px;
+        background-color: #3b89e9;
+        border-radius: 5px;
+    }
+</style>
+</head>
+<body>
+
+<center>
+    <div id="word"></div>
+    <div id="attempts"></div>
+    <div id="buttons"></div><br>
+    <div id="hints"></div>
+</center>
+
+<script src="words.js"></script>
+<script src="forca.js"></script>
+</body>
+</html>
