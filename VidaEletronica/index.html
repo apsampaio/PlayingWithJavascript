@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <title>MyLifeGame</title>
+    <style>
+        #map {
+            border: solid 5px;
+        }
+        #rules {
+        font-family: 'Open Sans Condensed', sans-serif;
+        font-size: 25px;
+        color: #333; 
+        }
+        </style>
+</head>
+<body>
+    <center>
+    <div id="map"></div>
+    <div id="rules">
+    Types: <br>
+    x = Male | o = Female | c = Child | @ = Predator <br>
+    Encounters: <br>
+    x + o = c++ <br> 
+    x + c = c-- <br>
+    o + c = x++ || o++ <br>
+    @ + o = o-- <br>
+    @ + c = c-- <br>
+    x + @ = @-- <br>
+    map[] != o = Game Over! 
+    </div>
+    </center>
+
+<script src="game.js"></script>
+</body>
+</html>
