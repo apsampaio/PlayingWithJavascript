@@ -62,6 +62,7 @@ cube = [
 draw();
 // Cube backup before move
 var cubeBackup;
+var cubeFormed = JSON.parse(JSON.stringify(cube));
 /*  ----------  */
 
 
@@ -72,7 +73,8 @@ function draw() {
     drawMiniMap();
     drawLines();
     drawRects();
-    cubeBackup = JSON.parse(JSON.stringify(cube));
+    // Deep copy to set its own key-value pairs
+    cubeBackup = JSON.parse(JSON.stringify(cube)); 
 
 }
 
@@ -271,8 +273,138 @@ function rotateLineLeft(line) {
 
 }
 
+// Rotate command : R, L
 function rotateLineUp(line) {
 
+    let backLine;
+    if (line != 1) {
 
+        if(!line) {
+
+            backLine = 0;
+            rotateFaceCCW(LEFT);
+
+        } else {
+
+            backLine = 2;
+            rotateFaceCW(RIGHT);
+
+        }
+
+    } else { backLine = 1; }
+     
+    for (let i = 0; i <= 2; i++) {
+    
+        cube[TOP][i][line] = cubeBackup[FRONT][i][line];
+        cube[BACK][i][backLine] = cubeBackup[TOP][i][line];
+        cube[BOTTOM][i][line] = cubeBackup[BACK][i][backLine];
+        cube[FRONT][i][line] = cubeBackup[BOTTOM][i][line];
+
+    }
+
+        
+    draw();
+    
+}
+
+// Rotate a cube face Clockwise
+function rotateFaceCW(face) {
+
+    for (let i = 0, j = 2; i <= 2; i++) {
+
+        cube[face][0][i] = cubeBackup[face][j][0];
+        cube[face][2][i] = cubeBackup[face][j][2];
+        j--;
+    }
+    cube[face][1][0] = cubeBackup[face][2][1];
+    cube[face][1][2] = cubeBackup[face][0][1];
+
+    // if we rotating the front or back we need to change some more
+
+    if (face == FRONT) {
+ 
+        for (let i = 0, j = 2; i <= 2; i++) {
+
+            cube[RIGHT][i][0]  = cubeBackup[TOP][2][i];
+            cube[BOTTOM][0][i] = cubeBackup[RIGHT][j][0]; 
+            cube[LEFT][i][2]   = cubeBackup[BOTTOM][0][i];
+            cube[TOP][2][i]    = cubeBackup[LEFT][j][2];
+            j--;
+        }
+
+    } else if (face == BACK) {
+
+        for (let i = 0, j = 2; i <= 2; i++) {
+
+            cube[LEFT][i][0]   = cubeBackup[TOP][0][j];
+            cube[BOTTOM][2][i] = cubeBackup[LEFT][i][0];
+            cube[RIGHT][i][2]  = cubeBackup[BOTTOM][2][j];
+            cube[TOP][0][i]    = cubeBackup[RIGHT][i][2];
+            j--;
+
+        }
+    }
+
+    draw();
 
 }
+
+// Rotate a cube face CounterClockwise
+function rotateFaceCCW(face) {
+
+    for (let i = 0; i <= 2; i++) {
+
+        cube[face][0][i] = cubeBackup[face][i][2];
+        cube[face][2][i] = cubeBackup[face][i][0];
+
+    }
+
+    cube[face][1][0] = cubeBackup[face][0][1];
+    cube[face][1][2] = cubeBackup[face][2][1];
+
+    draw();
+
+
+    /*      FRONT
+
+            cube[RIGHT][0][0] = cubeBackup[TOP][2][0];
+            cube[RIGHT][1][0] = cubeBackup[TOP][2][1];
+            cube[RIGHT][2][0] = cubeBackup[TOP][2][2];
+
+            cube[BOTTOM][0][0] = cubeBackup[RIGHT][2][0];
+            cube[BOTTOM][0][1] = cubeBackup[RIGHT][1][0];
+            cube[BOTTOM][0][2] = cubeBackup[RIGHT][0][0];
+        
+            cube[LEFT][0][2] = cubeBackup[BOTTOM][0][0];
+            cube[LEFT][1][2] = cubeBackup[BOTTOM][0][1];
+            cube[LEFT][2][2] = cubeBackup[BOTTOM][0][2];
+
+            cube[TOP][2][0] = cubeBackup[LEFT][2][2];
+            cube[TOP][2][1] = cubeBackup[LEFT][1][2];
+            cube[TOP][2][2] = cubeBackup[LEFT][0][2]; 
+            
+            BACK
+
+
+            cube[LEFT][0][0] = cubeBackup[TOP][0][2];
+            cube[LEFT][1][0] = cubeBackup[TOP][0][1];
+            cube[LEFT][2][0] = cubeBackup[TOP][0][0];
+
+            cube[BOTTOM][2][0] = cubeBackup[LEFT][0][0];
+            cube[BOTTOM][2][1] = cubeBackup[LEFT][1][0];
+            cube[BOTTOM][2][2] = cubeBackup[LEFT][2][0];
+        
+            cube[RIGHT][0][2] = cubeBackup[BOTTOM][2][2];
+            cube[RIGHT][1][2] = cubeBackup[BOTTOM][2][1];
+            cube[RIGHT][2][2] = cubeBackup[BOTTOM][2][0];
+
+            cube[TOP][0][0] = cubeBackup[RIGHT][0][2];
+            cube[TOP][0][1] = cubeBackup[RIGHT][1][2];
+            cube[TOP][0][2] = cubeBackup[RIGHT][2][2];
+            
+            
+            */
+
+}
+
+
