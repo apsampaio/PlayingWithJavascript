@@ -4,6 +4,8 @@ var ctx = rubiks.getContext('2d');
 rubiks.width = 300;
 rubiks.height = 300;
 
+const TOP = 0, FRONT = 1, BOTTOM = 2, BACK = 3, RIGHT = 4, LEFT = 5; 
+
 var minimap = document.getElementById('minimap');
 var ctxM = minimap.getContext('2d');
 
@@ -14,64 +16,64 @@ minimap.height = 225;
 var colorSet = ['orange', 'white', 'red', 'yellow', 'blue', 'green']; 
 
 // Cube Faces
-cube = {
+cube = [
 
     // TOP
-    top: [
+    [
         [0, 0, 0],
         [0, 0, 0],
         [0, 0, 0]
     ],
     // FRONT
-    front: [
+    [
         [1, 1, 1],
         [1, 1, 1],
         [1, 1, 1]
     ],
     // BOTTOM
-    bottom: [
+    [
         [2, 2, 2],
         [2, 2, 2],
         [2, 2, 2]
     ],
     // BACK
-    back: [
+    [
         [3, 3, 3],
         [3, 3, 3],
         [3, 3, 3]
     ],
     // RIGHT
-    right: [
+    [
         [4, 4, 4],
         [4, 4, 4],
         [4, 4, 4]
     ],
     // LEFT
-    left: [
+    [
         [5, 5, 5],
         [5, 5, 5],
         [5, 5, 5]
     ]
 
-};
+];
+
 /* Initializer */
 
 draw();
 // Cube backup before move
-var cubeBackup = JSON.parse(JSON.stringify(cube));
-
-
-
-
+var cubeBackup;
 /*  ----------  */
 
 
 
 // Draw canvas function
 function draw() {
+
     drawMiniMap();
     drawLines();
     drawRects();
+    cubeBackup = JSON.parse(JSON.stringify(cube));
+
 }
 
 // Draw main lines for de cube
@@ -105,7 +107,7 @@ function drawRects() {
 
         for (let i = 0; i <= 2; i++) {
         
-            ctx.fillStyle = colorSet[cube.front[j][i]];
+            ctx.fillStyle = colorSet[cube[FRONT][j][i]];
             ctx.fillRect(x, y, 100, 100);
             ctx.stroke();
 
@@ -131,7 +133,7 @@ function drawMiniMap() {
         for (let i = 0; i < 3; i++) {
   
             ctxM.beginPath();
-            ctxM.fillStyle = colorSet[cube.left[j][i]];
+            ctxM.fillStyle = colorSet[cube[LEFT][j][i]];
             ctxM.fillRect(x, y, 25, 25);
             ctxM.strokeRect(x, y, 25, 25);
             ctxM.stroke();
@@ -151,7 +153,7 @@ function drawMiniMap() {
         for (let i = 0; i < 3; i++) {
   
             ctxM.beginPath();
-            ctxM.fillStyle = colorSet[cube.top[j][i]];
+            ctxM.fillStyle = colorSet[cube[TOP][j][i]];
             ctxM.fillRect(x, y, 25, 25);
             ctxM.strokeRect(x, y, 25, 25);
             ctxM.stroke();
@@ -171,7 +173,7 @@ function drawMiniMap() {
         for (let i = 0; i < 3; i++) {
   
             ctxM.beginPath();
-            ctxM.fillStyle = colorSet[cube.bottom[j][i]];
+            ctxM.fillStyle = colorSet[cube[BOTTOM][j][i]];
             ctxM.fillRect(x, y, 25, 25);
             ctxM.strokeRect(x, y, 25, 25);
             ctxM.stroke();
@@ -191,7 +193,7 @@ function drawMiniMap() {
         for (let i = 0; i < 3; i++) {
   
             ctxM.beginPath();
-            ctxM.fillStyle = colorSet[cube.front[j][i]];
+            ctxM.fillStyle = colorSet[cube[FRONT][j][i]];
             ctxM.fillRect(x, y, 25, 25);
             ctxM.strokeRect(x, y, 25, 25);
             ctxM.stroke();
@@ -211,7 +213,7 @@ function drawMiniMap() {
         for (let i = 0; i < 3; i++) {
   
             ctxM.beginPath();
-            ctxM.fillStyle = colorSet[cube.right[j][i]];
+            ctxM.fillStyle = colorSet[cube[RIGHT][j][i]];
             ctxM.fillRect(x, y, 25, 25);
             ctxM.strokeRect(x, y, 25, 25);
             ctxM.stroke();
@@ -231,7 +233,7 @@ function drawMiniMap() {
         for (let i = 0; i < 3; i++) {
   
             ctxM.beginPath();
-            ctxM.fillStyle = colorSet[cube.back[j][i]];
+            ctxM.fillStyle = colorSet[cube[BACK][j][i]];
             ctxM.fillRect(x, y, 25, 25);
             ctxM.strokeRect(x, y, 25, 25);
             ctxM.stroke();
@@ -245,15 +247,32 @@ function drawMiniMap() {
 
 }
 
-// Rotate command
+// Rotate command : U', D
 function rotateLineRight(line) {
          
-    cube.right[line] = cubeBackup.front[line];  
-    cube.front[line] = cubeBackup.left[line];
-    cube.left[line] = cubeBackup.back[line];
-    cube.back[line] = cubeBackup.right[line];
+    cube[RIGHT][line] = cubeBackup[FRONT][line];  
+    cube[FRONT][line] = cubeBackup[LEFT][line];
+    cube[LEFT][line] = cubeBackup[BACK][line];
+    cube[BACK][line] = cubeBackup[RIGHT][line];
 
     draw();
-    
-    cubeBackup = JSON.parse(JSON.stringify(cube));
+
+}
+
+// Rotate command : U, D'
+function rotateLineLeft(line) {
+         
+    cube[RIGHT][line] = cubeBackup[BACK][line];  
+    cube[FRONT][line] = cubeBackup[RIGHT][line];
+    cube[LEFT][line] = cubeBackup[FRONT][line];
+    cube[BACK][line] = cubeBackup[LEFT][line];
+
+    draw();
+
+}
+
+function rotateLineUp(line) {
+
+
+
 }
