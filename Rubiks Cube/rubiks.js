@@ -14,7 +14,7 @@ minimap.height = 225;
 var colorSet = ['orange', 'white', 'red', 'yellow', 'blue', 'green']; 
 
 // Cube Faces
-var cube = {
+cube = {
 
     // TOP
     top: [
@@ -58,7 +58,10 @@ var cube = {
 
 draw();
 // Cube backup before move
-var cubeBackup = cube;
+var cubeBackup = JSON.parse(JSON.stringify(cube));
+
+
+
 
 /*  ----------  */
 
@@ -69,7 +72,6 @@ function draw() {
     drawMiniMap();
     drawLines();
     drawRects();
-    
 }
 
 // Draw main lines for de cube
@@ -245,12 +247,13 @@ function drawMiniMap() {
 
 // Rotate command
 function rotateLineRight(line) {
-    //BUG
+         
     cube.right[line] = cubeBackup.front[line];  
     cube.front[line] = cubeBackup.left[line];
-    cube.left[line] = cubeBackup.back[line];   
-    cube.back[line]  = cubeBackup.right[line];
+    cube.left[line] = cubeBackup.back[line];
+    cube.back[line] = cubeBackup.right[line];
 
     draw();
-
+    
+    cubeBackup = JSON.parse(JSON.stringify(cube));
 }
